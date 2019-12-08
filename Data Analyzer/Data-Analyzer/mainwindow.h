@@ -33,9 +33,10 @@ private:
     QAction *openPortAction;
     QAction *getPortAction;
 
-
-    void loadSettings();
-    void saveSettings();
+    void closeEvent (QCloseEvent *event);
+    void readSettings();
+    void writeSettings();
+    QString getPortConfStr();
 };
 
 #endif // MAINWINDOW_H

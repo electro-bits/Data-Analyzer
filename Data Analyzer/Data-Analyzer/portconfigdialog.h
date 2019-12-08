@@ -43,7 +43,7 @@ private:
     QStringList LastPortList;
     QPushButton *okBtn;
     QPushButton *CancelBtn;
-    //QPushButton *ConnectionPb;
+    QLabel * portDiscription;
 
     QSerialPort SerialPort;
     QTimer * timer;

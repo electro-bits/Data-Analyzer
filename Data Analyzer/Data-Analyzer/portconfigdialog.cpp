@@ -9,15 +9,28 @@ PortConfigDialog::PortConfigDialog(QWidget *parent):QDialog(parent)
     //QList<QSerialPortInfo> list = QSerialPortInfo::availablePorts();
     //qDebug() << list.length()<<endl;
 
-
     foreach(QSerialPortInfo info,QSerialPortInfo::availablePorts())
     {
         //qDebug()<<info.portName()<<endl;
         //qDebug()<<info.description()<<endl;
         LastPortList<<info.portName();
     }
+
     LastPortList.sort(Qt::CaseSensitive);
     PortCb->addItems(LastPortList);
+
+
+    portDiscription =  new QLabel();
+    foreach(QSerialPortInfo info,QSerialPortInfo::availablePorts())
+    {
+        if(info.portName() == PortCb->currentText())
+        {
+
+            portDiscription->setText("Device: " + info.description());
+
+        }
+
+    }
 
     BaudrateCb = new QComboBox();
     QStringList BaudrateList = { "1200", "2400", "4800" , "9600", "19200", "38400" ,"57600", "115200"};
@@ -48,6 +61,7 @@ PortConfigDialog::PortConfigDialog(QWidget *parent):QDialog(parent)
     QLabel * StopbitsLb = new QLabel(" Stopbits: ");
 
 
+
     QHBoxLayout *portLayout = new QHBoxLayout;
     portLayout->addWidget(PortLb);
     portLayout->addWidget(PortCb);
@@ -74,7 +88,6 @@ PortConfigDialog::PortConfigDialog(QWidget *parent):QDialog(parent)
     StopBitsLayout->addWidget(StopbitsCb);
 
 
-
     QVBoxLayout *topLayout = new QVBoxLayout;
     topLayout->addLayout(portLayout);
     topLayout->addLayout(BaudrateLayout);
@@ -82,6 +95,7 @@ PortConfigDialog::PortConfigDialog(QWidget *parent):QDialog(parent)
     topLayout->addLayout(ParityCbLayout);
     topLayout->addLayout(FlowControlLayout);
     topLayout->addLayout(StopBitsLayout);
+    topLayout->addWidget(portDiscription);
     topLayout->addStretch();
 
 
@@ -98,6 +112,7 @@ PortConfigDialog::PortConfigDialog(QWidget *parent):QDialog(parent)
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addLayout(topLayout);
     mainLayout->addLayout(BottomLayout);
+   // mainLayout->addWidget(statusBar);
 
     setLayout(mainLayout);
 
@@ -200,6 +215,3 @@ void PortConfigDialog::onCancelBtnClicked()
 {
     reject();
 }
-
-
-
