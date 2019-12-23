@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[10];
-    char stringdata0[112];
+    QByteArrayData data[11];
+    char stringdata0[133];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -30,20 +30,22 @@ struct qt_meta_stringdata_MainWindow_t {
 static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_MainWindow = {
     {
 QT_MOC_LITERAL(0, 0, 10), // "MainWindow"
-QT_MOC_LITERAL(1, 11, 7), // "setPort"
-QT_MOC_LITERAL(2, 19, 0), // ""
-QT_MOC_LITERAL(3, 20, 12), // "QSerialPort*"
-QT_MOC_LITERAL(4, 33, 7), // "newPort"
-QT_MOC_LITERAL(5, 41, 7), // "getPort"
-QT_MOC_LITERAL(6, 49, 8), // "openPort"
-QT_MOC_LITERAL(7, 58, 18), // "serialErrorHandler"
-QT_MOC_LITERAL(8, 77, 28), // "QSerialPort::SerialPortError"
-QT_MOC_LITERAL(9, 106, 5) // "error"
+QT_MOC_LITERAL(1, 11, 15), // "setUserSettings"
+QT_MOC_LITERAL(2, 27, 0), // ""
+QT_MOC_LITERAL(3, 28, 12), // "QSerialPort*"
+QT_MOC_LITERAL(4, 41, 7), // "newPort"
+QT_MOC_LITERAL(5, 49, 4), // "path"
+QT_MOC_LITERAL(6, 54, 15), // "getUserSettings"
+QT_MOC_LITERAL(7, 70, 8), // "openPort"
+QT_MOC_LITERAL(8, 79, 18), // "serialErrorHandler"
+QT_MOC_LITERAL(9, 98, 28), // "QSerialPort::SerialPortError"
+QT_MOC_LITERAL(10, 127, 5) // "error"
 
     },
-    "MainWindow\0setPort\0\0QSerialPort*\0"
-    "newPort\0getPort\0openPort\0serialErrorHandler\0"
-    "QSerialPort::SerialPortError\0error"
+    "MainWindow\0setUserSettings\0\0QSerialPort*\0"
+    "newPort\0path\0getUserSettings\0openPort\0"
+    "serialErrorHandler\0QSerialPort::SerialPortError\0"
+    "error"
 };
 #undef QT_MOC_LITERAL
 
@@ -61,16 +63,16 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   34,    2, 0x0a /* Public */,
-       5,    0,   37,    2, 0x0a /* Public */,
-       6,    0,   38,    2, 0x0a /* Public */,
-       7,    1,   39,    2, 0x0a /* Public */,
+       1,    2,   34,    2, 0x0a /* Public */,
+       6,    0,   39,    2, 0x0a /* Public */,
+       7,    0,   40,    2, 0x0a /* Public */,
+       8,    1,   41,    2, 0x0a /* Public */,
 
  // slots: parameters
-    QMetaType::Void, 0x80000000 | 3,    4,
+    QMetaType::Void, 0x80000000 | 3, QMetaType::QString,    4,    5,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 8,    9,
+    QMetaType::Void, 0x80000000 | 9,   10,
 
        0        // eod
 };
@@ -81,8 +83,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         MainWindow *_t = static_cast<MainWindow *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->setPort((*reinterpret_cast< QSerialPort*(*)>(_a[1]))); break;
-        case 1: _t->getPort(); break;
+        case 0: _t->setUserSettings((*reinterpret_cast< QSerialPort*(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
+        case 1: _t->getUserSettings(); break;
         case 2: _t->openPort(); break;
         case 3: _t->serialErrorHandler((*reinterpret_cast< QSerialPort::SerialPortError(*)>(_a[1]))); break;
         default: ;

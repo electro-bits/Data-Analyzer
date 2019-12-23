@@ -22,8 +22,8 @@ public:
     ~MainWindow();
 
 public slots:
-    void setPort(QSerialPort *newPort);
-    void getPort();
+    void setUserSettings(QSerialPort *newPort,QString path);
+    void getUserSettings();
     void openPort();
     void serialErrorHandler(QSerialPort::SerialPortError error);
 
@@ -32,6 +32,7 @@ private:
     QSerialPort *serialPort;
     QAction *openPortAction;
     QAction *getPortAction;
+    QString confFilePath;
 
     void closeEvent (QCloseEvent *event);
     void readSettings();

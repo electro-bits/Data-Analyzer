@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     openPortAction->setCheckable(true);
 
 
-    connect(getPortAction ,SIGNAL(triggered(bool)),this , SLOT(getPort()));
+    connect(getPortAction ,SIGNAL(triggered(bool)),this , SLOT(getUserSettings()));
     connect(openPortAction,SIGNAL(triggered(bool)),this,SLOT(openPort()));
 
     serialPort = new QSerialPort(this);
@@ -38,7 +38,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::setPort(QSerialPort *newPort)
+void MainWindow::setUserSettings(QSerialPort *newPort,QString path)
 {
     serialPort->setPortName(newPort->portName());
     serialPort->setBaudRate(newPort->baudRate());
@@ -46,6 +46,9 @@ void MainWindow::setPort(QSerialPort *newPort)
     serialPort->setParity(newPort->parity());
     serialPort->setFlowControl(newPort->flowControl());
     serialPort->setStopBits(newPort->stopBits());
+
+    confFilePath = path;
+    qDebug() << "Path = "<<path;
 
 //    qDebug() <<serialPort->portName()<<endl;
 //    qDebug() <<serialPort->baudRate()<<endl;
@@ -55,10 +58,10 @@ void MainWindow::setPort(QSerialPort *newPort)
 //    qDebug() <<serialPort->flowControl()<<endl;
 }
 
-void MainWindow::getPort()
+void MainWindow::getUserSettings()
 {
     PortConfigDialog *dialog = new PortConfigDialog(this);
-    connect(dialog,SIGNAL(newPortSetting(QSerialPort*)),this,SLOT(setPort(QSerialPort*)));
+    connect(dialog,SIGNAL(newPortSetting(QSerialPort*,QString)),this,SLOT(setUserSettings(QSerialPort*,QString)));
 
     if(dialog->exec() == QDialog::Accepted)
     {
