@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>res/gear.svg</file>
+        <file>res/plug.svg</file>
+    </qresource>
+</RCC>
