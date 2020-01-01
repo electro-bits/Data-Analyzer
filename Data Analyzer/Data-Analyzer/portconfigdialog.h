@@ -15,12 +15,13 @@
 #include <QSerialPortInfo>
 #include <QDebug>
 #include <QTimer>
+#include <QLineEdit>
+
 
 
 
 class PortConfigDialog:public QDialog
 {
-
     Q_OBJECT
 
 public:
@@ -29,11 +30,12 @@ public slots:
     void updatePortList();
     void onOkBtnClicked();
     void onCancelBtnClicked();
+    void updatePortDescription(const QString &text);
+    void getConfFilePath();
 signals:
-    void newPortSetting(QSerialPort *);
+    void newPortSetting(QSerialPort *,QString );
 
 private:
-
     QComboBox *PortCb;
     QComboBox *BaudrateCb;
     QComboBox *DatabitsCb;
@@ -43,11 +45,12 @@ private:
     QStringList LastPortList;
     QPushButton *okBtn;
     QPushButton *CancelBtn;
+    QPushButton * getConfFileBtn;
+    QLabel * getConfFileLbl;
+    QLineEdit * getConfFileTxdt;
     QLabel * portDiscription;
-
     QSerialPort SerialPort;
     QTimer * timer;
-
 };
 
 

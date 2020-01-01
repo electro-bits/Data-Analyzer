@@ -160,6 +160,8 @@ Makefile: ../Data-Analyzer/Data-Analyzer.pro C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mksp
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_widgets_private.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_winextras.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_winextras_private.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_xlsx.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_xlsx_private.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_xml.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_xml_private.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_xmlpatterns.pri \
@@ -192,6 +194,7 @@ Makefile: ../Data-Analyzer/Data-Analyzer.pro C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mksp
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/features/lex.prf \
 		../Data-Analyzer/Data-Analyzer.pro \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/lib/qtmaind.prl \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/lib/Qt5Xlsx.prl \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/lib/Qt5Widgets.prl \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/lib/Qt5Gui.prl \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/lib/Qt5SerialPort.prl \
@@ -298,6 +301,8 @@ C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_widgets.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_widgets_private.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_winextras.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_winextras_private.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_xlsx.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_xlsx_private.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_xml.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_xml_private.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_xmlpatterns.pri:
@@ -330,6 +335,7 @@ C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/features/yacc.prf:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/features/lex.prf:
 ../Data-Analyzer/Data-Analyzer.pro:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/lib/qtmaind.prl:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/lib/Qt5Xlsx.prl:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/lib/Qt5Widgets.prl:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/lib/Qt5Gui.prl:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/lib/Qt5SerialPort.prl:

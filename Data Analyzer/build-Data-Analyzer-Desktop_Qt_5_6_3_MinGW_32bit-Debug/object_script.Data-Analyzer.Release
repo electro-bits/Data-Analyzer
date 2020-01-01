@@ -1,0 +1,12 @@
+INPUT(
+./release\main.o
+./release\mainwindow.o
+./release\portconfigdialog.o
+./release\parameterstable.o
+./release\serialport.o
+./release\qrc_res.o
+./release\moc_mainwindow.o
+./release\moc_portconfigdialog.o
+./release\moc_parameterstable.o
+./release\moc_serialport.o
+);

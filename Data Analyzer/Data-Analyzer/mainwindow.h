@@ -7,7 +7,20 @@
 #include <QDebug>
 #include <QToolBar>
 #include <QAction>
+#include <QtXlsx>
 #include "portconfigdialog.h"
+#include "parameterstable.h"
+#include "serialport.h"
+
+/*
+typedef struct {
+    int sid;
+    int len;
+    QVector<QString> paramNames;
+    QVector<int> paramSize;
+}packet_t;
+
+*/
 
 namespace Ui {
 class MainWindow;
@@ -22,21 +35,26 @@ public:
     ~MainWindow();
 
 public slots:
-    void setPort(QSerialPort *newPort);
-    void getPort();
+    void setUserSettings(QSerialPort *newPort,QString path);
+    void getUserSettings();
     void openPort();
     void serialErrorHandler(QSerialPort::SerialPortError error);
 
 private:
     Ui::MainWindow *ui;
-    QSerialPort *serialPort;
+    SerialPort *serialPort;
+    ParametersTable *parametersTable;
     QAction *openPortAction;
     QAction *getPortAction;
+    QHBoxLayout *mainLayout;
+    QString confFilePath;
+//    QVector<packet_t> packet;
 
     void closeEvent (QCloseEvent *event);
     void readSettings();
     void writeSettings();
     QString getPortConfStr();
+    void makeParametersTable();
 };
 
 #endif // MAINWINDOW_H

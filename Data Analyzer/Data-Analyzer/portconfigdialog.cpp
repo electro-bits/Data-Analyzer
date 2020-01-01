@@ -1,6 +1,11 @@
 #include <QtGui>
 #include "portconfigdialog.h"
 #include <QList>
+#include <QGroupBox>
+#include <QSpacerItem>
+#include <QFileDialog>
+#include <QFile>
+#include <QMessageBox>
 
 PortConfigDialog::PortConfigDialog(QWidget *parent):QDialog(parent)
 {
@@ -25,11 +30,11 @@ PortConfigDialog::PortConfigDialog(QWidget *parent):QDialog(parent)
     {
         if(info.portName() == PortCb->currentText())
         {
-
-            portDiscription->setText("Device: " + info.description());
-
+            if("" != info.description())
+                portDiscription->setText("Device: " + info.description());
+            else
+                portDiscription->setText("");
         }
-
     }
 
     BaudrateCb = new QComboBox();
@@ -53,7 +58,7 @@ PortConfigDialog::PortConfigDialog(QWidget *parent):QDialog(parent)
     QStringList StopBitsList = {"1", "1.5", "2"};
     StopbitsCb->addItems( StopBitsList);
 
-    QLabel * PortLb = new QLabel(" Port: ");
+    QLabel * PortLb = new QLabel(" Port Name: ");
     QLabel * BaudrateLb = new QLabel(" Baudrate: ");
     QLabel * DatabitsLb = new QLabel(" Databits: ");
     QLabel * ParityLb = new QLabel(" Parity: ");
@@ -62,9 +67,9 @@ PortConfigDialog::PortConfigDialog(QWidget *parent):QDialog(parent)
 
 
 
-    QHBoxLayout *portLayout = new QHBoxLayout;
-    portLayout->addWidget(PortLb);
-    portLayout->addWidget(PortCb);
+    QHBoxLayout *portNameLayout = new QHBoxLayout;
+    portNameLayout->addWidget(PortLb);
+    portNameLayout->addWidget(PortCb);
 
     QHBoxLayout *BaudrateLayout = new QHBoxLayout;
     BaudrateLayout->addWidget(BaudrateLb);
@@ -88,15 +93,30 @@ PortConfigDialog::PortConfigDialog(QWidget *parent):QDialog(parent)
     StopBitsLayout->addWidget(StopbitsCb);
 
 
-    QVBoxLayout *topLayout = new QVBoxLayout;
-    topLayout->addLayout(portLayout);
-    topLayout->addLayout(BaudrateLayout);
-    topLayout->addLayout(DatabitsLayout);
-    topLayout->addLayout(ParityCbLayout);
-    topLayout->addLayout(FlowControlLayout);
-    topLayout->addLayout(StopBitsLayout);
-    topLayout->addWidget(portDiscription);
-    topLayout->addStretch();
+    QVBoxLayout *portLayout = new QVBoxLayout;
+    portLayout->addLayout(portNameLayout);
+    portLayout->addLayout(BaudrateLayout);
+    portLayout->addLayout(DatabitsLayout);
+    portLayout->addLayout(ParityCbLayout);
+    portLayout->addLayout(FlowControlLayout);
+    portLayout->addLayout(StopBitsLayout);
+    portLayout->addWidget(portDiscription);
+    portLayout->addStretch();
+
+    QGroupBox *portGroupBox = new QGroupBox("Port");
+    portGroupBox->setLayout(portLayout);
+
+    //QSpacerItem * my_spacer = new QSpacerItem(0,1000, QSizePolicy::Expanding, QSizePolicy::Expanding);
+    getConfFileBtn = new QPushButton("...");
+    getConfFileLbl = new QLabel("Path:");
+    getConfFileTxdt = new QLineEdit();
+    QHBoxLayout * getConfFileLayout = new QHBoxLayout;
+    getConfFileLayout->addWidget(getConfFileLbl);
+    getConfFileLayout->addWidget(getConfFileTxdt);
+    getConfFileLayout->addWidget(getConfFileBtn);
+    QGroupBox *ConfFileGroupBox = new QGroupBox("Configuraion File");
+    ConfFileGroupBox->setLayout(getConfFileLayout);
+    connect(getConfFileBtn,SIGNAL(clicked(bool)),this,SLOT(getConfFilePath()));
 
 
 
@@ -110,18 +130,25 @@ PortConfigDialog::PortConfigDialog(QWidget *parent):QDialog(parent)
     connect(CancelBtn,SIGNAL(clicked(bool)),this,SLOT(onCancelBtnClicked()));
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
-    mainLayout->addLayout(topLayout);
+    mainLayout->addWidget(portGroupBox);
+    mainLayout->addWidget(ConfFileGroupBox);
+    //mainLayout->addLayout(topLayout);
     mainLayout->addLayout(BottomLayout);
    // mainLayout->addWidget(statusBar);
 
     setLayout(mainLayout);
 
-    setWindowTitle(tr("Port Configuraion"));
+    setWindowTitle(tr("Settings"));
     setFixedHeight(sizeHint().height());
 
     timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(updatePortList()));
     timer->start(1000);
+
+    connect(PortCb,SIGNAL(currentTextChanged(QString)),this,SLOT(updatePortDescription(QString)));
+    this->setFixedSize(250,300);
+
+
 
 }
 
@@ -206,12 +233,42 @@ void PortConfigDialog::onOkBtnClicked()
                                                         ,QSerialPort::TwoStop};
     SerialPort.setStopBits(stopBits2Enum.at(StopbitsCb->currentIndex()));
 
+    if(QFile::exists(getConfFileTxdt->text()))
+    {
+         qDebug()<<"file exists";
+         emit newPortSetting(&SerialPort,getConfFileTxdt->text());
+         accept();
+    }
+    else
+    {
+         qDebug()<<"file not found";
+         QMessageBox::information(this,"Error","Configuration File Not Found");
+    }
 
-    emit newPortSetting(&SerialPort);
-    accept();
 }
 
 void PortConfigDialog::onCancelBtnClicked()
 {
     reject();
+}
+
+void PortConfigDialog::updatePortDescription(const QString &text)
+{
+    foreach(QSerialPortInfo info,QSerialPortInfo::availablePorts())
+    {
+        if(info.portName() == text)
+        {
+            if("" != info.description())
+                portDiscription->setText("Device: " + info.description());
+            else
+                portDiscription->setText("");
+        }
+    }
+}
+
+void PortConfigDialog::getConfFilePath()
+{
+    QString fileName = QFileDialog::getOpenFileName(0,"Open File",".","*.xlsx");
+    qDebug()<<fileName;
+    getConfFileTxdt->setText(fileName);
 }

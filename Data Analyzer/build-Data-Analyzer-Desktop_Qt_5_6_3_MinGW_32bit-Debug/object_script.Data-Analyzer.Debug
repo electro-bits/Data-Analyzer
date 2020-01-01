@@ -1,0 +1,12 @@
+INPUT(
+./debug\main.o
+./debug\mainwindow.o
+./debug\portconfigdialog.o
+./debug\parameterstable.o
+./debug\serialport.o
+./debug\qrc_res.o
+./debug\moc_mainwindow.o
+./debug\moc_portconfigdialog.o
+./debug\moc_parameterstable.o
+./debug\moc_serialport.o
+);

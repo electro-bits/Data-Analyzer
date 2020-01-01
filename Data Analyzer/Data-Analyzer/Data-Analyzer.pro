@@ -6,6 +6,7 @@
 
 QT       += core gui
 QT       += serialport
+QT       += xlsx
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,11 +28,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    portconfigdialog.cpp
+    portconfigdialog.cpp \
+    parameterstable.cpp \
+    serialport.cpp
 
 HEADERS  += \
     mainwindow.h \
-    portconfigdialog.h
+    portconfigdialog.h \
+    parameterstable.h \
+    serialport.h
 
 FORMS    += \
     mainwindow.ui

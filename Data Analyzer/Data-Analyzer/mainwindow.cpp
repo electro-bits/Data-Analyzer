@@ -22,15 +22,24 @@ MainWindow::MainWindow(QWidget *parent) :
     openPortAction->setCheckable(true);
 
 
-    connect(getPortAction ,SIGNAL(triggered(bool)),this , SLOT(getPort()));
+    connect(getPortAction ,SIGNAL(triggered(bool)),this , SLOT(getUserSettings()));
     connect(openPortAction,SIGNAL(triggered(bool)),this,SLOT(openPort()));
 
-    serialPort = new QSerialPort(this);
+    serialPort = new SerialPort();
     connect(serialPort,SIGNAL(error(QSerialPort::SerialPortError)),this,SLOT(serialErrorHandler(QSerialPort::SerialPortError)));
 
     readSettings();
     statusBar()->showMessage(getPortConfStr() , 0);
 
+    QWidget *centralWindow = new QWidget;
+    mainLayout = new QHBoxLayout(centralWindow);
+
+    makeParametersTable();
+    mainLayout->addWidget(parametersTable);
+
+
+    centralWindow->setLayout(mainLayout);
+    setCentralWidget(centralWindow);
 }
 
 MainWindow::~MainWindow()
@@ -38,7 +47,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::setPort(QSerialPort *newPort)
+void MainWindow::setUserSettings(QSerialPort *newPort,QString path)
 {
     serialPort->setPortName(newPort->portName());
     serialPort->setBaudRate(newPort->baudRate());
@@ -46,6 +55,9 @@ void MainWindow::setPort(QSerialPort *newPort)
     serialPort->setParity(newPort->parity());
     serialPort->setFlowControl(newPort->flowControl());
     serialPort->setStopBits(newPort->stopBits());
+
+    confFilePath = path;
+    qDebug() << "Path = "<<path;
 
 //    qDebug() <<serialPort->portName()<<endl;
 //    qDebug() <<serialPort->baudRate()<<endl;
@@ -55,10 +67,10 @@ void MainWindow::setPort(QSerialPort *newPort)
 //    qDebug() <<serialPort->flowControl()<<endl;
 }
 
-void MainWindow::getPort()
+void MainWindow::getUserSettings()
 {
     PortConfigDialog *dialog = new PortConfigDialog(this);
-    connect(dialog,SIGNAL(newPortSetting(QSerialPort*)),this,SLOT(setPort(QSerialPort*)));
+    connect(dialog,SIGNAL(newPortSetting(QSerialPort*,QString)),this,SLOT(setUserSettings(QSerialPort*,QString)));
 
     if(dialog->exec() == QDialog::Accepted)
     {
@@ -277,4 +289,85 @@ QString MainWindow::getPortConfStr()
     }
 
     return portConfStr;
+}
+
+
+
+
+#define PARAM_COLUMN    1
+#define PARAM_ROW       10
+
+#define SID_COLUMN    5
+#define SID_ROW       10
+
+
+void MainWindow::makeParametersTable()
+{
+    parametersTable = new ParametersTable();
+//    parametersTable->addNewParameter("P1");
+//    parametersTable->addNewParameter("P2");
+//    parametersTable->setParameter("P22", "14");
+//    parametersTable->setParameter("p11", "-76");
+
+    if(QFile::exists("conf.xlsx"))
+    {
+        QXlsx::Document xlsx("conf.xlsx");
+
+        if(QVariant(xlsx.read(1,1)).toString() == "Data Analyzer Configuration File")
+        {
+            QVector<QString> name;
+            QVector<int> size;
+
+            for(int confRow = PARAM_ROW;(QVariant(xlsx.read(confRow,PARAM_COLUMN)).toString()) != "";confRow++)
+            {
+                parametersTable->addNewParameter(QVariant(xlsx.read(confRow,PARAM_COLUMN)).toString());
+
+                name<<(QVariant(xlsx.read(confRow,PARAM_COLUMN)).toString());
+                size<<(QVariant(xlsx.read(confRow,PARAM_COLUMN+1)).toInt());
+            }
+
+            for(int confRow = SID_ROW;(QVariant(xlsx.read(confRow,SID_COLUMN)).toInt()) != 0 ;confRow++)
+            {
+                packet_t tmpPacket;
+                tmpPacket.sid = (QVariant(xlsx.read(confRow,SID_COLUMN)).toInt());
+                tmpPacket.paramNames.clear();
+                tmpPacket.paramSize.clear();
+                tmpPacket.len = 0;
+                int i;
+
+                for(int confCol = SID_COLUMN+1;(QVariant(xlsx.read(confRow,confCol)).toString()) != "" ;confCol++)
+                {
+                    QString tmpName = (QVariant(xlsx.read(confRow,confCol)).toString());
+                    i = name.indexOf(tmpName);
+
+                    if(i == -1)
+                    {
+                        QMessageBox::information(this,"Error",("parameter '"+tmpName+"' not found"));
+                        break;
+                    }
+                    else
+                    {
+                        tmpPacket.len += size.at(i);
+                        tmpPacket.paramNames<<tmpName;
+                        tmpPacket.paramSize<<size.at(i);
+                    }
+
+                }
+                if(i != -1)
+                {
+                    serialPort->packets<<tmpPacket;
+                }
+            }
+        }
+        else
+        {
+            qDebug()<<"makeParametersTable-wrong conf file";
+            QMessageBox::information(this,"Error","Wrong Configuration File");
+        }
+    }
+    else
+    {
+         qDebug()<<"makeParametersTable-conf file not found";
+         QMessageBox::information(this,"Error","Configuration File Not Found");
+    }
 }
